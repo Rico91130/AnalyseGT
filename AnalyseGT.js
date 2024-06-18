@@ -31,6 +31,13 @@ function _AnalyseGT() {
         if (initialized)
             return;
         initialized = true;
+
+        document.body.innerHTML = `<div id='waitingMessage' class='interact'>
+            <span>Patientez svp... les actions sont désactivées pour le moment.</span>
+            <div class="progressbar"><span class="progress"></span><div class="counter">0%</div></div>
+            <span class='title'></span>
+        </div>`;
+        
     }
 
     initialize();
