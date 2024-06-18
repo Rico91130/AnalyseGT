@@ -1,4 +1,4 @@
-var AnalyseGT = null;
+var AnalyseGT = null; 
 
 /* Dans le cas d'un chargement hors bookmark */
 if (typeof helper === "undefined" && typeof queuedFetch === "undefined") {
