@@ -21,63 +21,98 @@ if (typeof helper === "undefined" && typeof queuedFetch === "undefined") {
         });
 }
 
-var editor = null;
 
-/* DRAG EVENT */
+function _AnalyseGT() {
 
-/* Mouse and Touch Actions */
+    var editor = null;
 
-var elements = document.getElementsByClassName('drag-drawflow');
-for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('touchend', drop, false);
-    elements[i].addEventListener('touchmove', positionMobile, false);
-    elements[i].addEventListener('touchstart', drag, false);
-}
+    var initialized = false;
 
-var mobile_item_selec = '';
-var mobile_last_move = null;
-function positionMobile(ev) {
-    mobile_last_move = ev;
-}
+    function initialize() {
 
-function allowDrop(ev) {
-    ev.preventDefault();
-}
+        /* On initialise qu'une fois */
+        if (initialized)
+            return;
+        initialized = true;
 
-function drag(ev) {
-    if (ev.type === "touchstart") {
-        mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
-    } else {
-        ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+        console.log("Analyse GT : init");
+        var id = document.getElementById("drawflow");
+        editor = new Drawflow(id);
+        editor.reroute = true;
+        const dataToImport = {
+            "drawflow": {
+                "Home": {
+                    "data": {
+    
+                    }
+                },
+                "Other": {
+                    "data": {
+                    }
+                }
+            }
+        };
+    
+        editor.start();
+        editor.import(dataToImport);
+
     }
-}
 
-function drop(ev) {
-    if (ev.type === "touchend") {
-        var parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
-        if (parentdrawflow != null) {
-            addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
-        }
-        mobile_item_selec = '';
-    } else {
+    /* DRAG EVENT */
+
+    /* Mouse and Touch Actions */
+
+    var elements = document.getElementsByClassName('drag-drawflow');
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('touchend', drop, false);
+        elements[i].addEventListener('touchmove', positionMobile, false);
+        elements[i].addEventListener('touchstart', drag, false);
+    }
+
+    var mobile_item_selec = '';
+    var mobile_last_move = null;
+    function positionMobile(ev) {
+        mobile_last_move = ev;
+    }
+
+    function allowDrop(ev) {
         ev.preventDefault();
-        var data = ev.dataTransfer.getData("node");
-        addNodeToDrawFlow(data, ev.clientX, ev.clientY);
     }
 
-}
-
-function addNodeToDrawFlow(name, pos_x, pos_y) {
-    if (editor.editor_mode === 'fixed') {
-        return false;
+    function drag(ev) {
+        if (ev.type === "touchstart") {
+            mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+        } else {
+            ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+        }
     }
-    pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
-    pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
+
+    function drop(ev) {
+        if (ev.type === "touchend") {
+            var parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+            if (parentdrawflow != null) {
+                addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
+            }
+            mobile_item_selec = '';
+        } else {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("node");
+            addNodeToDrawFlow(data, ev.clientX, ev.clientY);
+        }
+
+    }
+
+    function addNodeToDrawFlow(name, pos_x, pos_y) {
+        if (editor.editor_mode === 'fixed') {
+            return false;
+        }
+        pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
+        pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
 
 
-    switch (name) {
-        case 'APIQuery':
-            var APIQueryTemplate = `
+        switch (name) {
+            case 'APIQuery':
+                var APIQueryTemplate = `
   <div>
     <div class="title-box">Requetage API</div>
     <div class="box">
@@ -86,10 +121,10 @@ function addNodeToDrawFlow(name, pos_x, pos_y) {
     </div>
   </div>
   `;
-            editor.addNode('APIQuery', 0, 1, pos_x, pos_y, 'APIQuery', { "name": '' }, APIQueryTemplate);
-            break;
-        case 'FilterQuery':
-            var FilterQueryTemplate = `
+                editor.addNode('APIQuery', 0, 1, pos_x, pos_y, 'APIQuery', { "name": '' }, APIQueryTemplate);
+                break;
+            case 'FilterQuery':
+                var FilterQueryTemplate = `
   <div>
     <div class="title-box">Filtrer liste</div>
     <div class="box">
@@ -99,47 +134,10 @@ function addNodeToDrawFlow(name, pos_x, pos_y) {
       </div>
     </div>
   `;
-            editor.addNode('FilterQuery', 1, 1, pos_x, pos_y, 'FilterQuery', { "name": '' }, FilterQueryTemplate);
-            break;
-        default:
-    }
-}
-
-
-function init() {
-
-    console.log("Analyse GT : init");
-    var id = document.getElementById("drawflow");
-    editor = new Drawflow(id);
-    editor.reroute = true;
-    const dataToImport = {
-        "drawflow": {
-            "Home": {
-                "data": {
-
-                }
-            },
-            "Other": {
-                "data": {
-                }
-            }
+                editor.addNode('FilterQuery', 1, 1, pos_x, pos_y, 'FilterQuery', { "name": '' }, FilterQueryTemplate);
+                break;
+            default:
         }
-    };
-
-    editor.start();
-    editor.import(dataToImport);
-
-}
-
-function _AnalyseGT() {
-    var initialized = false;
-
-    function initialize() {
-
-        /* On initialise qu'une fois */
-        if (initialized)
-            return;
-        initialized = true;
     }
 
     initialize();
