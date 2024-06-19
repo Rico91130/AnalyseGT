@@ -33,9 +33,9 @@ class _AnalyseGT {
     initialize() {
 
         /* On initialise qu'une fois */
-        if (initialized)
+        if (this.initialized)
             return;
-        initialized = true;
+        this.initialized = true;
 
         console.log("Analyse GT : init");
         var id = document.getElementById("drawflow");
