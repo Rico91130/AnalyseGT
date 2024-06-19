@@ -59,9 +59,9 @@ class _AnalyseGT {
         this.editor.import(dataToImport);
 
         for (var i = 0; i < this.elements.length; i++) {
-            this.elements[i].addEventListener('touchend', drop.bind(this), false);
-            this.elements[i].addEventListener('touchmove', positionMobile.bind(this), false);
-            this.elements[i].addEventListener('touchstart', drag.bind(this), false);
+            this.elements[i].addEventListener('touchend', this.drop.bind(this), false);
+            this.elements[i].addEventListener('touchmove', this.positionMobile.bind(this), false);
+            this.elements[i].addEventListener('touchstart', this.drag.bind(this), false);
         }
 
         this.mobile_item_selec = '';
