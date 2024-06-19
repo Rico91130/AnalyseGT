@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+    <link rel="stylesheet" href="https://jerosoler.github.io/Drawflow/beautiful.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+    <script src="https://rico91130.github.io/AnalyseGT/main.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <h2>Analyse GT</h2>
+
+    </header>
+    <div class="wrapper">
+        <div class="col">
+            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="APIQuery">
+                <span>Requetage API</span>
+            </div>
+            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="FilterQuery">
+                <span>Filtrer liste</span>
+            </div>
+        </div>
+        <div class="col-right">
+            <div class="menu">
+                <ul>
+                    <li onclick="editor.changeModule('Home'); changeModule(event);" class="selected">Home</li>
+                    <li onclick="editor.changeModule('Other'); changeModule(event);">Other Module</li>
+                </ul>
+            </div>
+            <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+                <div class="btn-export" onclick="Swal.fire({ title: 'Export',
+                  html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
+                  })">Export</div>
+                <div class="btn-clear" onclick="editor.clearModuleSelected()">Clear</div>
+                <div class="btn-lock">
+                    <i id="lock" class="fas fa-lock" onclick="editor.editor_mode='fixed'; changeMode('lock');"></i>
+                    <i id="unlock" class="fas fa-lock-open" onclick="editor.editor_mode='edit'; changeMode('unlock');"
+                        style="display:none;"></i>
+                </div>
+                <div class="bar-zoom">
+                    <i class="fas fa-search-minus" onclick="editor.zoom_out()"></i>
+                    <i class="fas fa-search" onclick="editor.zoom_reset()"></i>
+                    <i class="fas fa-search-plus" onclick="editor.zoom_in()"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
