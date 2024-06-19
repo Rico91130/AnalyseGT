@@ -22,13 +22,15 @@ if (typeof helper === "undefined" && typeof queuedFetch === "undefined") {
 }
 
 
-function _AnalyseGT() {
+class _AnalyseGT {
 
-    var editor = null;
+    constructor() {
+        this.editor = null;
+        this.initialized = false;
+        this.elements = document.getElementsByClassName('drag-drawflow');
+    }
 
-    var initialized = false;
-
-    function initialize() {
+    initialize() {
 
         /* On initialise qu'une fois */
         if (initialized)
@@ -37,13 +39,13 @@ function _AnalyseGT() {
 
         console.log("Analyse GT : init");
         var id = document.getElementById("drawflow");
-        editor = new Drawflow(id);
-        editor.reroute = true;
+        this.editor = new Drawflow(id);
+        this.editor.reroute = true;
         const dataToImport = {
             "drawflow": {
                 "Home": {
                     "data": {
-    
+
                     }
                 },
                 "Other": {
@@ -52,9 +54,19 @@ function _AnalyseGT() {
                 }
             }
         };
-    
-        editor.start();
-        editor.import(dataToImport);
+
+        this.editor.start();
+        this.editor.import(dataToImport);
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('touchend', drop, false);
+            elements[i].addEventListener('touchmove', positionMobile, false);
+            elements[i].addEventListener('touchstart', drag, false);
+        }
+
+        this.mobile_item_selec = '';
+        this.mobile_last_move = null;
+
 
     }
 
@@ -62,38 +74,31 @@ function _AnalyseGT() {
 
     /* Mouse and Touch Actions */
 
-    var elements = document.getElementsByClassName('drag-drawflow');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener('touchend', drop, false);
-        elements[i].addEventListener('touchmove', positionMobile, false);
-        elements[i].addEventListener('touchstart', drag, false);
+
+
+    positionMobile(ev) {
+        this.mobile_last_move = ev;
     }
 
-    var mobile_item_selec = '';
-    var mobile_last_move = null;
-    function positionMobile(ev) {
-        mobile_last_move = ev;
-    }
-
-    function allowDrop(ev) {
+    allowDrop(ev) {
         ev.preventDefault();
     }
 
-    function drag(ev) {
+    drag(ev) {
         if (ev.type === "touchstart") {
-            mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+            this.mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
         } else {
             ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
         }
     }
 
-    function drop(ev) {
+    drop(ev) {
         if (ev.type === "touchend") {
-            var parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+            var parentdrawflow = document.elementFromPoint(this.mobile_last_move.touches[0].clientX, this.mobile_last_move.touches[0].clientY).closest("#drawflow");
             if (parentdrawflow != null) {
-                addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
+                addNodeToDrawFlow(this.mobile_item_selec, this.mobile_last_move.touches[0].clientX, this.mobile_last_move.touches[0].clientY);
             }
-            mobile_item_selec = '';
+            this.mobile_item_selec = '';
         } else {
             ev.preventDefault();
             var data = ev.dataTransfer.getData("node");
@@ -102,12 +107,12 @@ function _AnalyseGT() {
 
     }
 
-    function addNodeToDrawFlow(name, pos_x, pos_y) {
-        if (editor.editor_mode === 'fixed') {
+    addNodeToDrawFlow(name, pos_x, pos_y) {
+        if (this.editor.editor_mode === 'fixed') {
             return false;
         }
-        pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
-        pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
+        pos_x = pos_x * (this.editor.precanvas.clientWidth / (this.editor.precanvas.clientWidth * this.editor.zoom)) - (this.editor.precanvas.getBoundingClientRect().x * (this.editor.precanvas.clientWidth / (this.editor.precanvas.clientWidth * this.editor.zoom)));
+        pos_y = pos_y * (this.editor.precanvas.clientHeight / (this.editor.precanvas.clientHeight * this.editor.zoom)) - (this.editor.precanvas.getBoundingClientRect().y * (this.editor.precanvas.clientHeight / this.(editor.precanvas.clientHeight * this.editor.zoom)));
 
 
         switch (name) {
@@ -121,7 +126,7 @@ function _AnalyseGT() {
     </div>
   </div>
   `;
-                editor.addNode('APIQuery', 0, 1, pos_x, pos_y, 'APIQuery', { "name": '' }, APIQueryTemplate);
+                this.editor.addNode('APIQuery', 0, 1, pos_x, pos_y, 'APIQuery', { "name": '' }, APIQueryTemplate);
                 break;
             case 'FilterQuery':
                 var FilterQueryTemplate = `
@@ -134,11 +139,9 @@ function _AnalyseGT() {
       </div>
     </div>
   `;
-                editor.addNode('FilterQuery', 1, 1, pos_x, pos_y, 'FilterQuery', { "name": '' }, FilterQueryTemplate);
+                this.editor.addNode('FilterQuery', 1, 1, pos_x, pos_y, 'FilterQuery', { "name": '' }, FilterQueryTemplate);
                 break;
             default:
         }
     }
-
-    initialize();
 }
