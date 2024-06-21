@@ -22,6 +22,10 @@ class Job {
     }
 
     static onNodeCreated(id) {
+        Job.postProcessHTMLNode(id);
+    }
+
+    static postProcessHTMLNode(id) {
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
         var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
@@ -32,6 +36,14 @@ class Job {
 </div>
         `;
         }
+    }
+
+    static onModuleChanged() {
+        var currentModule = AnalyseGT.editor.module;
+        AnalyseGT.editor.drawflow.drawflow[currentModule].data.forEach(n => {
+            Job.postProcessHTMLNode(n.id);
+        });
+    
     }
 
     constructor(id, title) {
