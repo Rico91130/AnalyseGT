@@ -1,33 +1,32 @@
-var AnalyseGT = null;
-
-/* Dans le cas d'un chargement hors bookmark */
 if (typeof helper === "undefined" && typeof queuedFetch === "undefined") {
-    const __delay = ms => new Promise(res => setTimeout(res, ms));
-
+    
     function _loadScript(e, t) {
         var i = document.createElement("script");
         i.type = "text/javascript";
         i.onload = function () { t() };
         i.src = e; document.getElementsByTagName("head")[0].appendChild(i)
     };
+
     _loadScript(
         "https://rico91130.github.io/Tools/Helper.js?" + (new Date()).getTime(),
         function () {
-            helper.loadScripts("Tools/QueuedFetch.js").then(
+            helper.loadScripts("Tools/QueuedFetch.js", "AnalyseGT/job.js").then(
                 setTimeout(function () {
                     AnalyseGT = new _AnalyseGT();
+                    AnalyseGT.initialize();
                 }, 1000)
             );
         });
+
 }
 
 
 class _AnalyseGT {
 
     constructor() {
+        this.container = null;
         this.editor = null;
         this.initialized = false;
-        this.elements = document.getElementsByClassName('drag-drawflow');
     }
 
     initialize() {
@@ -38,8 +37,13 @@ class _AnalyseGT {
         this.initialized = true;
 
         console.log("Analyse GT : init");
-        var id = document.getElementById("drawflow");
-        this.editor = new Drawflow(id);
+        
+        this.container = document.getElementById("drawflow");
+
+        this.container.addEventListener('drop', this.drop.bind(this), false);
+        this.container.addEventListener('dragover', this.allowDrop.bind(this), false);
+
+        this.editor = new Drawflow(this.container);
         this.editor.reroute = true;
         const dataToImport = {
             "drawflow": {
@@ -58,54 +62,41 @@ class _AnalyseGT {
         this.editor.start();
         this.editor.import(dataToImport);
 
-        for (var i = 0; i < this.elements.length; i++) {
-            this.elements[i].addEventListener('touchend', this.drop.bind(this), false);
-            this.elements[i].addEventListener('touchmove', this.positionMobile.bind(this), false);
-            this.elements[i].addEventListener('touchstart', this.drag.bind(this), false);
-        }
-
-        this.mobile_item_selec = '';
+        this.last_item_selec = '';
         this.mobile_last_move = null;
-
+        
+        helper.loadScripts("AnalyseGT/jobs/APIQuery.js", "AnalyseGT/jobs/FilterQuery.js");
     }
 
     /* DRAG EVENT */
-
-    /* Mouse and Touch Actions */
-
-
-
     positionMobile(ev) {
         this.mobile_last_move = ev;
     }
-
     allowDrop(ev) {
         ev.preventDefault();
     }
-
     drag(ev) {
+        console.log("ok");
         if (ev.type === "touchstart") {
-            this.mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+            this.last_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
         } else {
-            ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+            this.last_item_selec = ev.target.getAttribute('data-node');
+            console.log(this.last_item_selec);
         }
     }
-
     drop(ev) {
         if (ev.type === "touchend") {
             var parentdrawflow = document.elementFromPoint(this.mobile_last_move.touches[0].clientX, this.mobile_last_move.touches[0].clientY).closest("#drawflow");
             if (parentdrawflow != null) {
-                addNodeToDrawFlow(this.mobile_item_selec, this.mobile_last_move.touches[0].clientX, this.mobile_last_move.touches[0].clientY);
+                this.addNodeToDrawFlow(this.last_item_selec, this.mobile_last_move.touches[0].clientX, this.mobile_last_move.touches[0].clientY);
             }
-            this.mobile_item_selec = '';
+            this.last_item_selec = '';
         } else {
             ev.preventDefault();
-            var data = ev.dataTransfer.getData("node");
-            addNodeToDrawFlow(data, ev.clientX, ev.clientY);
+            this.addNodeToDrawFlow(this.last_item_selec , ev.clientX, ev.clientY);
         }
 
     }
-
     addNodeToDrawFlow(name, pos_x, pos_y) {
         if (this.editor.editor_mode === 'fixed') {
             return false;
@@ -116,6 +107,7 @@ class _AnalyseGT {
 
         switch (name) {
             case 'APIQuery':
+
                 var APIQueryTemplate = `
   <div>
     <div class="title-box">Requetage API</div>

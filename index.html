@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="https://jerosoler.github.io/Drawflow/beautiful.css">
 
     <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
-    <script src="https://rico91130.github.io/AnalyseGT/main.js"></script>
+    <script>
+        var AnalyseGT = null;
+    </script>
+    <script src="./main.js"></script>
 
 </head>
 
@@ -21,13 +24,7 @@
 
     </header>
     <div class="wrapper">
-        <div class="col">
-            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="APIQuery">
-                <span>Requetage API</span>
-            </div>
-            <div class="drag-drawflow" draggable="true" ondragstart="drag(event)" data-node="FilterQuery">
-                <span>Filtrer liste</span>
-            </div>
+        <div class="col" id="jobLists">
         </div>
         <div class="col-right">
             <div class="menu">
@@ -36,7 +33,7 @@
                     <li onclick="editor.changeModule('Other'); changeModule(event);">Other Module</li>
                 </ul>
             </div>
-            <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div id="drawflow">
 
                 <div class="btn-export" onclick="Swal.fire({ title: 'Export',
                   html: '<pre><code>'+JSON.stringify(editor.export(), null,4)+'</code></pre>'
@@ -57,10 +54,6 @@
         </div>
     </div>
 
-    <script>
-        AnalyseGT = new _AnalyseGT();
-        AnalyseGT.initialize();
-    </script>
 </body>
 
 </html>
