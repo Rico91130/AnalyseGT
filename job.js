@@ -22,7 +22,8 @@ class Job {
      }
 
     static onNodeCreated(id) {
-        console.log(id);
+        var o = document.getElementById("node-" + id);
+        console.log(o);
     }
 
     constructor(id, title) {
