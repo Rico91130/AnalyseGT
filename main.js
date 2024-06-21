@@ -128,7 +128,8 @@ class _AnalyseGT {
         pos_y = pos_y * (this.editor.precanvas.clientHeight / (this.editor.precanvas.clientHeight * this.editor.zoom)) - (this.editor.precanvas.getBoundingClientRect().y * (this.editor.precanvas.clientHeight / (this.editor.precanvas.clientHeight * this.editor.zoom)));
 
         var job = Job.registeredJobs.filter(j => j.id == name)[0];
-        if (job != null)
-            this.editor.addNode(job.id, job.nbInput, job.nbOutput, pos_x, pos_y, job.id, { "name": '' }, job.template);
+        if (job != null) {
+            console.log(this.editor.addNode(job.id, job.nbInput, job.nbOutput, pos_x, pos_y, job.className, { "name": '' }, job.template));
+        }
     }
 }

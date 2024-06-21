@@ -1,4 +1,6 @@
-Job.register(new Job("APIQuery", "Requetage API", `
+var job = new Job("APIQuery", "Requetage API");
+
+job.template = `
 <div>
   <div class="title-box">Requetage API</div>
   <div class="box">
@@ -6,4 +8,10 @@ Job.register(new Job("APIQuery", "Requetage API", `
   <input type="text" df-name>
   </div>
 </div>
-`, 0, 1));
+`;
+
+job.nbInput = 0;
+job.nbOutput = 1;
+job.className = "APIQuery";
+
+Job.register(job);

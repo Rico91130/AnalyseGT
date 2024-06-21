@@ -1,4 +1,6 @@
-Job.register(new Job("FilterQuery", "Filtrer liste", `
+var job = new Job("FilterQuery", "Filtrer liste");
+
+job.template = `
 <div>
   <div class="title-box">Filtrer liste</div>
   <div class="box">
@@ -7,4 +9,10 @@ Job.register(new Job("FilterQuery", "Filtrer liste", `
       Element courant : item
     </div>
   </div>
-`, 1, 1));
+`;
+
+job.nbInput = 1;
+job.nbOutput = 1;
+job.className = "FilterQuery";
+
+Job.register(job);

@@ -21,11 +21,22 @@ class Job {
         }, 200)
      }
 
-    constructor(id, title, template, nbInput, nbOutput) {
+    constructor(id, title) {
+
         this.id = id;
         this.title = title;
-        this.template = template;
-        this.nbInput = nbInput;
-        this.nbOutput = nbOutput;
+        
+        this.template = `
+        <div>
+          <div class="title-box">title</div>
+          <div class="box">content
+          </div>
+        </div>
+        `;
+
+        this.nbInput = 0;
+        this.nbOutput = 0;
+        this.className = '';
+
     }
 }
