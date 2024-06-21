@@ -27,8 +27,8 @@ class Job {
         var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
         if (job.nbInput == 0) {
             o.innerHTML += `
-<div style="position:absolute;text-align:center;justify-content: center;bottom:-30px;width:100%">
-<i class="fa-regular fa-circle-play"></i>
+<div style="position:absolute;text-align:center;justify-content: center;bottom:-10px;width:100%">
+<i class="fa-regular fa-circle-play fa-xl"></i>
 </div>
         `;
         }
