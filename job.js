@@ -22,6 +22,7 @@ class Job {
     }
 
     static onNodeCreated(id) {
+        console.log("0");
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
         var job = Job.registeredJobs.filter(x => x.id == node.name);
