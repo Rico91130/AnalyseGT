@@ -21,11 +21,15 @@ class Job {
         }, 200)
      }
 
+    static onNodeCreated(id) {
+        console.log(id);
+    }
+
     constructor(id, title) {
 
         this.id = id;
         this.title = title;
-        
+
         this.template = `
         <div>
           <div class="title-box">title</div>

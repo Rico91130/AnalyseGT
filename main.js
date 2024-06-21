@@ -66,6 +66,8 @@ class _AnalyseGT {
         this.mobile_last_move = null;
 
         helper.loadScripts("AnalyseGT/jobs/APIQuery.js", "AnalyseGT/jobs/FilterQuery.js");
+
+        this.editor.on("nodeCreated", Job.onNodeCreated);
     }
 
     /* DRAG EVENT */
@@ -129,7 +131,8 @@ class _AnalyseGT {
 
         var job = Job.registeredJobs.filter(j => j.id == name)[0];
         if (job != null) {
-            console.log(this.editor.addNode(job.id, job.nbInput, job.nbOutput, pos_x, pos_y, job.className, { "name": '' }, job.template));
+            this.editor.addNode(job.id, job.nbInput, job.nbOutput, pos_x, pos_y, job.className, { "name": '' }, job.template);
+
         }
     }
 }
