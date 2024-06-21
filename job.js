@@ -27,8 +27,8 @@ class Job {
         var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
         if (job.nbInput == 0) {
             o.innerHTML += `
-<div style="position:absolute;text-align:center;justify-content: center;bottom:-10px;width:100%">
-<i class="fa-regular fa-circle-play fa-xl"></i>
+<div class="" style="border-radius:4px;border: 1px solid #919191;background: #47d5388c;position:absolute;text-align:center;justify-content: center;height:30px;bottom:-45px;width:100%;line-height:30px">
+    Executer ▶
 </div>
         `;
         }
