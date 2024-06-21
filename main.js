@@ -68,6 +68,7 @@ class _AnalyseGT {
         helper.loadScripts("AnalyseGT/jobs/APIQuery.js", "AnalyseGT/jobs/FilterQuery.js");
 
         this.editor.on("nodeCreated", Job.onNodeCreated);
+        this.editor.on("moduleChanged", Job.onModuleChanged);
     }
 
     /* DRAG EVENT */
