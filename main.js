@@ -1,5 +1,5 @@
 if (typeof helper === "undefined" && typeof queuedFetch === "undefined") {
-    
+
     function _loadScript(e, t) {
         var i = document.createElement("script");
         i.type = "text/javascript";
@@ -36,8 +36,8 @@ class _AnalyseGT {
             return;
         this.initialized = true;
 
-        console.log("Analyse GT : init");
-        
+        console.log("Analyse GT : initialize");
+
         this.container = document.getElementById("drawflow");
 
         this.container.addEventListener('drop', this.drop.bind(this), false);
@@ -64,7 +64,7 @@ class _AnalyseGT {
 
         this.last_item_selec = '';
         this.mobile_last_move = null;
-        
+
         helper.loadScripts("AnalyseGT/jobs/APIQuery.js", "AnalyseGT/jobs/FilterQuery.js");
     }
 
@@ -76,12 +76,10 @@ class _AnalyseGT {
         ev.preventDefault();
     }
     drag(ev) {
-        console.log("ok");
         if (ev.type === "touchstart") {
             this.last_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
         } else {
             this.last_item_selec = ev.target.getAttribute('data-node');
-            console.log(this.last_item_selec);
         }
     }
     drop(ev) {
@@ -93,10 +91,35 @@ class _AnalyseGT {
             this.last_item_selec = '';
         } else {
             ev.preventDefault();
-            this.addNodeToDrawFlow(this.last_item_selec , ev.clientX, ev.clientY);
+            this.addNodeToDrawFlow(this.last_item_selec, ev.clientX, ev.clientY);
         }
 
     }
+
+    changeModule(moduleName, event) {
+        this.editor.changeModule(moduleName);
+
+        var all = document.querySelectorAll(".menu ul li");
+
+        for (var i = 0; i < all.length; i++) {
+            all[i].classList.remove('selected');
+        }
+        event.target.classList.add('selected');
+    }
+
+    changeMode(mode, option) {
+        AnalyseGT.editor.editor_mode = mode;
+
+        if (option == 'lock') {
+            lock.style.display = 'none';
+            unlock.style.display = 'block';
+        } else {
+            lock.style.display = 'block';
+            unlock.style.display = 'none';
+        }
+    }
+
+
     addNodeToDrawFlow(name, pos_x, pos_y) {
         if (this.editor.editor_mode === 'fixed') {
             return false;
