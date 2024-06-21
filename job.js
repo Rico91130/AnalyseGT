@@ -19,11 +19,19 @@ class Job {
             obj.addEventListener('touchmove', AnalyseGT.positionMobile.bind(AnalyseGT), false);
             obj.addEventListener('touchstart', AnalyseGT.drag.bind(AnalyseGT), false);
         }, 200)
-     }
+    }
 
     static onNodeCreated(id) {
         var o = document.getElementById("node-" + id);
-        console.log(o);
+        var node = AnalyseGT.editor.getNodeFromId(id);
+        var job = Job.registeredJobs.filter(x => x.id == node.name);
+        if (job.nbInput == 0) {
+            o.innerHTML += `
+<div style="position:absolute;text-align:center;justify-content: center;bottom:-30px;width:100%">
+    <span style="border:1px solid black;border-radius:40px;">▶</span>
+</div>
+        `;
+        }
     }
 
     constructor(id, title) {
