@@ -28,7 +28,7 @@ class Job {
         if (job.nbInput == 0) {
             o.innerHTML += `
 <div style="position:absolute;text-align:center;justify-content: center;bottom:-30px;width:100%">
-    <span style="border:1px solid black;border-radius:40px;">▶</span>
+<i class="fa-regular fa-circle-play"></i>
 </div>
         `;
         }
