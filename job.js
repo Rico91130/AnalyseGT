@@ -31,6 +31,7 @@ class Job {
     <span style="border:1px solid black;border-radius:40px;">▶</span>
 </div>
         `;
+        console.log("00");
         }
     }
 
