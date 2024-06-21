@@ -21,9 +21,11 @@ class Job {
         }, 200)
      }
 
-    constructor(id, title, template) {
+    constructor(id, title, template, nbInput, nbOutput) {
         this.id = id;
         this.title = title;
         this.template = template;
+        this.nbInput = nbInput;
+        this.nbOutput = nbOutput;
     }
 }

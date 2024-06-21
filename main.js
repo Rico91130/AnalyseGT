@@ -127,35 +127,8 @@ class _AnalyseGT {
         pos_x = pos_x * (this.editor.precanvas.clientWidth / (this.editor.precanvas.clientWidth * this.editor.zoom)) - (this.editor.precanvas.getBoundingClientRect().x * (this.editor.precanvas.clientWidth / (this.editor.precanvas.clientWidth * this.editor.zoom)));
         pos_y = pos_y * (this.editor.precanvas.clientHeight / (this.editor.precanvas.clientHeight * this.editor.zoom)) - (this.editor.precanvas.getBoundingClientRect().y * (this.editor.precanvas.clientHeight / (this.editor.precanvas.clientHeight * this.editor.zoom)));
 
-
-        switch (name) {
-            case 'APIQuery':
-
-                var APIQueryTemplate = `
-  <div>
-    <div class="title-box">Requetage API</div>
-    <div class="box">
-      <p>URL : </p>
-    <input type="text" df-name>
-    </div>
-  </div>
-  `;
-                this.editor.addNode('APIQuery', 0, 1, pos_x, pos_y, 'APIQuery', { "name": '' }, APIQueryTemplate);
-                break;
-            case 'FilterQuery':
-                var FilterQueryTemplate = `
-  <div>
-    <div class="title-box">Filtrer liste</div>
-    <div class="box">
-        Condition
-        <textarea df-template></textarea>
-        Element courant : item
-      </div>
-    </div>
-  `;
-                this.editor.addNode('FilterQuery', 1, 1, pos_x, pos_y, 'FilterQuery', { "name": '' }, FilterQueryTemplate);
-                break;
-            default:
-        }
+        var job = Job.registeredJobs.filter(j => j.id == name)[0];
+        if (job != null)
+            this.editor.addNode(job.id, job.nbInput, job.nbOutput, pos_x, pos_y, job.id, { "name": '' }, job.template);
     }
 }

@@ -7,4 +7,4 @@ Job.register(new Job("FilterQuery", "Filtrer liste", `
       Element courant : item
     </div>
   </div>
-`));
+`, 1, 1));

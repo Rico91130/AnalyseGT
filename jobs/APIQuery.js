@@ -6,4 +6,4 @@ Job.register(new Job("APIQuery", "Requetage API", `
   <input type="text" df-name>
   </div>
 </div>
-`));
+`, 0, 1));
