@@ -1,6 +1,15 @@
 class Job {
     static registeredJobs = [];
 
+    static getByName(name) {
+        var j = Job.registeredJobs.filter(j => j.id == name);
+        if (j.length > 0) {
+            return j[0]
+        } else {
+            return null;
+        }
+    }
+
     static register(j) {
 
         Job.registeredJobs.push(j);
@@ -28,8 +37,8 @@ class Job {
     static postProcessHTMLNode(id) {
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
-        var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
-        if (job.nbInput == 0) {
+        var job = Job.getByName(node.name);
+        if (job != null && job.nbInput == 0) {
             o.innerHTML += `
 <div class="btnExecute" data-action="execute">
     Executer ▶
@@ -72,7 +81,11 @@ document.addEventListener(`click`, e => {
       var nodeHTML = origin.closest(".drawflow-node");
       if (nodeHTML != null) {
         var nodeId = nodeHTML.id.split("-")[1];
-        console.log(AnalyseGT.editor.getNodeFromId(nodeId));
+        var node = AnalyseGT.editor.getNodeFromId(nodeId);
+        var job = job.getByName(node.name);
+        if (job != null && typeof job.onClick === 'function') {
+            job.onClick(node, nodeHTML.getAttribute("data-action"));
+        }
       }
     }
   });
