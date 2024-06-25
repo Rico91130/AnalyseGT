@@ -36,13 +36,11 @@ class Job {
     Executer ▶
 </div>
         `;
-        console.log("post");
         }
     }
 
-    static onModuleChanged() {
+    static refreshOverlay() {
         var currentModule = AnalyseGT.editor.module;
-        console.log("import:" + currentModule);
         for (var o in AnalyseGT.editor.drawflow.drawflow[currentModule].data) {
             Job.postProcessHTMLNode(AnalyseGT.editor.drawflow.drawflow[currentModule].data[o].id);
         };
