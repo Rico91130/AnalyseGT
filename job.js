@@ -29,10 +29,9 @@ class Job {
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
         var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
-        console.log(node.name + "=" + job.nbInput);
         if (job.nbInput == 0) {
             o.innerHTML += `
-<div class="btnExecute">
+<div class="btnExecute" data-action="execute">
     Executer ▶
 </div>
         `;
@@ -66,3 +65,10 @@ class Job {
 
     }
 }
+
+document.addEventListener(`click`, e => {
+    const origin = e.target;
+    if (origin.hasAttribute("data-action")) {
+      console.log(origin.hasAttribute("data-action"));
+    }
+  });
