@@ -14,4 +14,9 @@ job.nbInput = 0;
 job.nbOutput = 1;
 job.className = "APIQuery";
 
+job.onClick = function(node, action) {
+   console.log(node);
+   console.log(action);
+}
+
 Job.register(job);
