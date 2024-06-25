@@ -35,6 +35,7 @@ class Job {
     Executer ▶
 </div>
         `;
+        console.log("post");
         }
     }
 
