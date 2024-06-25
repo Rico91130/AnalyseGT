@@ -40,10 +40,9 @@ class Job {
 
     static onModuleChanged() {
         var currentModule = AnalyseGT.editor.module;
-        AnalyseGT.editor.drawflow.drawflow[currentModule].data.forEach(n => {
-            console.log(n);
-            Job.postProcessHTMLNode(n.id);
-        });
+        for (var o in AnalyseGT.editor.drawflow.drawflow[currentModule].data) {
+            Job.postProcessHTMLNode(AnalyseGT.editor.drawflow.drawflow[currentModule].data[o].id);
+        };
     
     }
 
