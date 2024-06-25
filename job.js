@@ -29,6 +29,7 @@ class Job {
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
         var job = Job.registeredJobs.filter(x => x.id == node.name)[0];
+        console.log(node.name + "=" + job.nbInput);
         if (job.nbInput == 0) {
             o.innerHTML += `
 <div class="btnExecute">
