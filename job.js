@@ -69,6 +69,10 @@ class Job {
 document.addEventListener(`click`, e => {
     const origin = e.target;
     if (origin.hasAttribute("data-action")) {
-      console.log(origin.closest(".drawflow-node"));
+      var nodeHTML = origin.closest(".drawflow-node");
+      if (nodeHTML != null) {
+        var nodeId = nodeHTML.id.split("-")[1];
+        console.log(AnalyseGT.editor.getNodeFromId(nodeId));
+      }
     }
   });
