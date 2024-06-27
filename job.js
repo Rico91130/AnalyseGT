@@ -82,7 +82,7 @@ document.addEventListener(`click`, e => {
       if (nodeHTML != null) {
         var nodeId = nodeHTML.id.split("-")[1];
         var node = AnalyseGT.editor.getNodeFromId(nodeId);
-        var job = job.getByName(node.name);
+        var job = Job.getByName(node.name);
         if (job != null && typeof job.onClick === 'function') {
             job.onClick(node, nodeHTML.getAttribute("data-action"));
         }
