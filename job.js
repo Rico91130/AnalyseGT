@@ -38,7 +38,7 @@ class Job {
         var o = document.getElementById("node-" + id);
         var node = AnalyseGT.editor.getNodeFromId(id);
         var job = Job.getByName(node.name);
-        if (job != null && job.nbInput == 0) {
+        if (job != null && job.options.executable) {
             o.innerHTML += `
 <div class="btnExecute" data-action="execute">
     Executer ▶
@@ -71,6 +71,9 @@ class Job {
         this.nbInput = 0;
         this.nbOutput = 0;
         this.className = '';
+        this.options = {
+            "executable" : false
+        }
 
     }
 }

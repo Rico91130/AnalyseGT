@@ -13,6 +13,7 @@ job.template = `
 job.nbInput = 0;
 job.nbOutput = 1;
 job.className = "APIQuery";
+job.options.executable = true;
 
 job.onClick = function(node, action) {
    console.log(node);
