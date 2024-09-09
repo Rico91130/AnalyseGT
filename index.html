@@ -3,74 +3,33 @@
 
 <head>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
-    <link rel="stylesheet" href="https://jerosoler.github.io/Drawflow/beautiful.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js" integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
-    <script>
-        var AnalyseGT = null;
-    </script>
-    <script src="https://rico91130.github.io/AnalyseGT/main.js"></script>
+    <script src="https://rico91130.github.io/AnalyseGT/litegraph.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://rico91130.github.io/AnalyseGT/litegraph.css">
 
-    <style>
-        .btnExecute {
-          cursor : pointer;
-          border-radius: 4px;
-          border: 1px solid #919191;
-          background: #47d5388c;
-          position: absolute;
-          text-align: center;
-          justify-content: center;
-          height: 30px;
-          bottom: -45px;
-          width: 100%;
-          line-height: 30px;
-        }
-      </style>
+ 
 
 </head>
 
-<body>
-    <header>
-        <h2>Analyse GT</h2>
+<body style='width:100%; height:100%'>
+<canvas id='mycanvas' width='1024' height='720' style='border: 1px solid'></canvas>
+<script>
+var graph = new LGraph();
 
-    </header>
-    <div class="wrapper">
-        <div class="col" id="jobLists">
-        </div>
-        <div class="col-right">
-            <div class="menu">
-                <ul>
-                    <li onclick="AnalyseGT.changeModule('Home', event);" class="selected">Home</li>
-                    <li onclick="AnalyseGT.changeModule('Other', event);">Other Module</li>
-                </ul>
-            </div>
-            <div id="drawflow">
+var canvas = new LGraphCanvas("#mycanvas", graph);
 
-                <div class="btn-export" onclick="Swal.fire({ title: 'Export',
-                  html: '<pre><code>'+JSON.stringify(AnalyseGT.editor.export(), null,4)+'</code></pre>'
-                  })">Export</div>
-                <div class="btn-clear" onclick="AnalyseGT.editor.clearModuleSelected()">Clear</div>
-                <div class="btn-lock">
-                    <i id="lock" class="fas fa-lock" onclick="AnalyseGT.changeMode('fixed', 'lock');"></i>
-                    <i id="unlock" class="fas fa-lock-open" onclick="AnalyseGT.changeMode('edit', 'unlock');"
-                        style="display:none;"></i>
-                </div>
-                <div class="bar-zoom">
-                    <i class="fas fa-search-minus" onclick="AnalyseGT.editor.zoom_out()"></i>
-                    <i class="fas fa-search" onclick="AnalyseGT.editor.zoom_reset()"></i>
-                    <i class="fas fa-search-plus" onclick="AnalyseGT.editor.zoom_in()"></i>
-                </div>
-            </div>
+var node_const = LiteGraph.createNode("basic/const");
+node_const.pos = [200,200];
+graph.add(node_const);
+node_const.setValue(4.5);
 
-        </div>
-    </div>
+var node_watch = LiteGraph.createNode("basic/watch");
+node_watch.pos = [700,200];
+graph.add(node_watch);
 
+node_const.connect(0, node_watch, 0 );
+
+graph.start()
+</script>
 </body>
 
 </html>
